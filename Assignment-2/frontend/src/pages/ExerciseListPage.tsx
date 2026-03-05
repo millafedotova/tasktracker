@@ -1,22 +1,60 @@
-import { useParams, Link } from 'react-router-dom';
-import React, { useState } from 'react';
-import { mockExercises } from '../data/mockExercises';
-import { mockExerciseCategories } from '../data/mockExerciseCategories';
-import { mockExerciseFields } from '../data/mockExerciseFields';
-import { mockCategories } from '../data/mockCategories';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
+interface Category {
+  id: number;
+  name: string;
+}
 
+interface Exercise {
+  id: number;
+  name: string;
+  date: string;
+  notes: string;
+  categoryIds: number[]; // предполагаем, что бек возвращает категории упражнения
+}
 
 export function ExerciseListPage() {
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const filteredExercises = selectedCategoryId
-    ? mockExercises.filter(ex =>
-        mockExerciseCategories.some(
-          ec => ec.exerciseId === ex.id && ec.categoryId === selectedCategoryId
-        )
-      )
-    : mockExercises;
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+
+        const exercisesRes = await fetch("http://localhost:8000/api/exercises");
+        if (!exercisesRes.ok) throw new Error("Failed to fetch exercises");
+        const exercisesData: Exercise[] = await exercisesRes.json();
+
+        const categoriesRes = await fetch("http://localhost:8000/api/categories");
+        if (!categoriesRes.ok) throw new Error("Failed to fetch categories");
+        const categoriesData: Category[] = await categoriesRes.json();
+
+        setExercises(exercisesData);
+        setCategories(categoriesData);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || "Error loading data");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+ const filteredExercises = selectedCategoryId
+  ? exercises.filter(ex =>
+      ex.categories.some(c => c.id === selectedCategoryId)
+    )
+  : exercises;
+
+  if (loading) return <div className="p-6">Loading...</div>;
+  if (error) return <div className="p-6 text-red-600">{error}</div>;
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen font-sans">
@@ -26,17 +64,17 @@ export function ExerciseListPage() {
         <button
           onClick={() => setSelectedCategoryId(null)}
           className={`px-3 py-1 rounded ${
-            selectedCategoryId === null ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            selectedCategoryId === null ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
         >
           All
         </button>
-        {mockCategories.map(c => (
+        {categories.map(c => (
           <button
             key={c.id}
             onClick={() => setSelectedCategoryId(c.id)}
             className={`px-3 py-1 rounded ${
-              selectedCategoryId === c.id ? 'bg-blue-500 text-white' : 'bg-gray-200'
+              selectedCategoryId === c.id ? "bg-blue-500 text-white" : "bg-gray-200"
             }`}
           >
             {c.name}
