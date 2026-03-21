@@ -128,5 +128,11 @@ def get_exercise_fields(exercise_id: int):
 
 def create_exercise(data):
     exercise = store.create_exercise(data)
+    return get_exercise_by_id(exercise.id)
 
+
+def update_exercise(exercise_id: int, data):
+    exercise = store.update_exercise(exercise_id, data)
+    if not exercise:
+        return None
     return get_exercise_by_id(exercise.id)
