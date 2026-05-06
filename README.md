@@ -8,6 +8,8 @@ The web application for managing your personal exercise library. Create an accou
 A client-side task management app built with plain HTML, CSS, and JavaScript. Supports creating, editing, deleting, and filtering tasks by status and priority. Data is persisted in `localStorage` with hash-based routing.
 
 **Run:** Open `Assignment-1/task-tracker/index.html` in a browser.
+<img width="2860" height="1500" alt="image" src="https://github.com/user-attachments/assets/78e3a886-d8af-40f3-945d-47057714836e" />
+
 
 ---
 
