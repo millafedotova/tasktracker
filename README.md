@@ -35,6 +35,9 @@ Extends Assignment 2 with a FastAPI backend and PostgreSQL database. Full CRUD f
 
 **Tech:** React 18, TypeScript, Vite, Tailwind CSS | FastAPI, SQLAlchemy, PostgreSQL
 
+<img width="2888" height="1102" alt="image" src="https://github.com/user-attachments/assets/1d7189b8-50ff-439d-b128-6d004df2b3e2" />
+
+
 **Run the backend:**
 
 ```bash
@@ -58,6 +61,9 @@ npm run dev
 ### Assignment 4 — Exercise Tracker with Authentication & Docker
 
 Builds on Assignment 3 by adding user authentication (JWT + bcrypt), per-user exercise ownership, protected routes, and Docker containerization.
+
+<img width="1158" height="936" alt="image" src="https://github.com/user-attachments/assets/7e03d6a8-171e-4e92-832f-ba4bcdcbe4f6" />
+
 
 **Tech:** React 18, TypeScript, AuthContext | FastAPI, JWT (python-jose), bcrypt, Docker, PostgreSQL
 
